@@ -4,6 +4,7 @@ FROM gocd/gocd-agent:15.1.0
 
 # install wget
 RUN apt-get update &&\
+    apt-get -y install apt-transport-https &&\
     apt-get install wget
 
 #install docker
@@ -25,3 +26,34 @@ RUN usermod -aG docker go
 
 # add self signed cert for private registry usage
 ADD gocd-agent/registry.crt /etc/docker/certs.d/192.168.59.103:5000/ca.crt
+
+
+
+### CUT HERE vvvvvvvvvvvvvvvvvvvvvvvvvvv
+# "Provision" the box with everything we need to run the jerbs
+# the aws cli
+RUN apt-get -y install unzip curl python && \
+  curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
+  unzip awscli-bundle.zip && \
+  ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+RUN apt-get -y install apt-transport-https ca-certificates && \
+  echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" > /etc/apt/sources.list.d/docker.list && \
+  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
+  apt-get update && \
+  #apt-get -y install docker.io && \
+  curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+  chmod +x /usr/local/bin/docker-compose
+
+RUN apt-get -y install curl && \
+  curl -sL https://deb.nodesource.com/setup_6.x | bash && \
+  apt-get -y install nodejs build-essential
+
+RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list && \
+  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
+  apt-get update && \
+  apt-get -y install \
+  maven \
+  openjdk-8-jre-headless \
+  scala \
+  sbt
