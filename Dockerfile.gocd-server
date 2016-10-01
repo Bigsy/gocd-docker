@@ -1,3 +1,5 @@
 FROM gocd/gocd-server
 
 ADD gocd-server/.ssh /var/go/.ssh
+
+RUN chown -R 999:999 /var/go/.ssh

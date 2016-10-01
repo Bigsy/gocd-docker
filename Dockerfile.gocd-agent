@@ -14,6 +14,9 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt
     apt-get -y install sbt && \
     apt-get -y install scala
 
+    #update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+    #update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/javac
+
 #install docker
 RUN wget -qO- https://get.docker.com/ | sh
 

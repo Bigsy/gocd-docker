@@ -55,11 +55,17 @@ Copy ```certs/domain.crt``` to ```gocd-agent/registry.crt``` prior to building t
 docker build -t mrohland/gocd-agent -f Dockerfile.gocd-agent .
 ```
 
+docker build -t mrohland/gocd-server -f Dockerfile.gocd-server .
+
+
 #### Run go.cd server and link plugin volume against data volume and that against gocd-server
 ```
 docker start gocd-plugins
 docker start gocd-data
-docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server gocd/gocd-server
+
+//docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server gocd/gocd-server
+docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server mrohland/gocd-server
+
 # run at least one go.cd build agent via
 for each in 1 ; do docker run -d --privileged --link gocd-server:go-server --name gocd-agent-$each mrohland/gocd-agent; done
 ```
