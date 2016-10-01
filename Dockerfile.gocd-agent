@@ -5,8 +5,9 @@ FROM gocd/gocd-agent:15.1.0
 # install wget
 RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
-    apt-get update &&\
-    apt-get -y install apt-transport-https &&\
+    add-apt-repository -y ppa:openjdk-r/ppa && \
+    apt-get update && \
+    apt-get -y install apt-transport-https && \
     apt-get -y install wget && \
     apt-get -y install maven && \
     apt-get -y install openjdk-8-jre-headless && \
