@@ -54,3 +54,7 @@ RUN apt-get -y install apt-transport-https ca-certificates && \
 RUN apt-get -y install curl && \
   curl -sL https://deb.nodesource.com/setup_6.x | bash && \
   apt-get -y install nodejs build-essential
+
+
+ADD gocd-server/.ssh /var/go/.ssh
+RUN chown -R 999:999 /var/go/.ssh
