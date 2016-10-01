@@ -1,4 +1,3 @@
 FROM gocd/gocd-server:15.1.0
 
-# Add github credentials to report build status
 ADD gocd-server/.ssh /var/go/.ssh
