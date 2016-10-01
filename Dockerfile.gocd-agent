@@ -3,9 +3,15 @@ FROM gocd/gocd-agent:15.1.0
 # Added docker to gocd-agent image as combination of current docker install docs + https://github.com/jpetazzo/dind/blob/master/Dockerfile
 
 # install wget
-RUN apt-get update &&\
+RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
+    apt-get update &&\
     apt-get -y install apt-transport-https &&\
-    apt-get install wget
+    apt-get -y install wget && \
+    apt-get -y install maven && \
+    apt-get -y install openjdk-8-jre-headless && \
+    apt-get -y install sbt && \
+    apt-get -y install scala && \
 
 #install docker
 RUN wget -qO- https://get.docker.com/ | sh
@@ -28,10 +34,6 @@ RUN usermod -aG docker go
 ADD gocd-agent/registry.crt /etc/docker/certs.d/192.168.59.103:5000/ca.crt
 
 
-
-### CUT HERE vvvvvvvvvvvvvvvvvvvvvvvvvvv
-# "Provision" the box with everything we need to run the jerbs
-# the aws cli
 RUN apt-get -y install unzip curl python && \
   curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
   unzip awscli-bundle.zip && \
@@ -48,12 +50,3 @@ RUN apt-get -y install apt-transport-https ca-certificates && \
 RUN apt-get -y install curl && \
   curl -sL https://deb.nodesource.com/setup_6.x | bash && \
   apt-get -y install nodejs build-essential
-
-RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list && \
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
-  apt-get update && \
-  apt-get -y install \
-  maven \
-  openjdk-8-jre-headless \
-  scala \
-  sbt
