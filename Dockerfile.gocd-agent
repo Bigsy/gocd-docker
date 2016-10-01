@@ -11,7 +11,7 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt
     apt-get -y install maven && \
     apt-get -y install openjdk-8-jre-headless && \
     apt-get -y install sbt && \
-    apt-get -y install scala && \
+    apt-get -y install scala
 
 #install docker
 RUN wget -qO- https://get.docker.com/ | sh
