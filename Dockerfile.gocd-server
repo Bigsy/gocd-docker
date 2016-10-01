@@ -1,10 +1,5 @@
 FROM gocd/gocd-server
 
+ADD gocd-server/.ssh /var/go/.ssh
 
-USER	root
-
-RUN		mkdir -p /var/go/.ssh
-COPY	gocd-server/.ssh /var/go/.ssh/
-RUN		chown -R go:go /var/go/.ssh	&& \
-		chmod 600 /var/go/.ssh/*
-
+RUN chown -R 999:999 /var/go/.ssh
