@@ -1,5 +1,6 @@
 FROM gocd/gocd-server
 
 ADD gocd-server/.ssh /var/go/.ssh
-
-RUN chown -R 999:999 /var/go/.ssh
+RUN chmod 700 /var/go/.ssh/id_rsa
+RUN chown -R go:go /var/go/.ssh
+RUN touch /var/go/.ssh/knownhosts
