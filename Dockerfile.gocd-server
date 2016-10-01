@@ -5,8 +5,6 @@ USER	root
 
 RUN		mkdir -p /var/go/.ssh
 COPY	gocd-server/.ssh /var/go/.ssh/
-RUN		chown -R go:go /var/go/.ssh	&&	\
+RUN		chown -R go:go /var/go/.ssh	&& \
 		chmod 600 /var/go/.ssh/*
-
-USER	go
 
