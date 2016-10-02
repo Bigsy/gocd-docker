@@ -1,7 +1,7 @@
 FROM tispr/gocd-agent-dind:15.1
 
 RUN apt-get update; apt-get install wget python -y; apt-get clean
-RUN curl -sSL https://get.docker.com/ | sh; gpasswd -a go docker
+#RUN curl -sSL https://get.docker.com/ | sh; gpasswd -a go docker
 RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py; pip install awscli
 
 # Installing OpenJDK 8
