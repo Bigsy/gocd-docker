@@ -19,8 +19,8 @@ RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
 RUN sudo apt-get update
 RUN sudo apt-get install sbt
 
-ADD gocd-server/.ssh /var/go/.ssh
-RUN chown -R go:go /var/go/.ssh
+ADD gocd-server/.ssh /home/go/.ssh
+RUN chown -R go:go /home/go/.ssh
 
 #RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 #RUN chmod +x /usr/local/bin/docker-compose
