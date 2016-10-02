@@ -38,24 +38,24 @@ subjectAltName = IP:<yourIP>
 #### Build a plugins image to contain plugins
 Idea: PlugIns should be able to get added & updated independently from data and server
 ```
-docker build -t mrohland/gocd-plugins:v1 -f Dockerfile.gocd-plugins .
-docker create --name gocd-plugins mrohland/gocd-plugins:v1
+docker build -t ovo/gocd-plugins:v1 -f Dockerfile.gocd-plugins .
+docker create --name gocd-plugins ovo/gocd-plugins:v1
 ```
 
 #### Build a data image to contain gocd
 Idea: This is the working volume gocd works on. It won't get versioned as the data(pipelines + other conf) will get backed up by gocd backup pipeline into github)
 ```
-docker build -t mrohland/gocd-data -f Dockerfile.gocd-data .
-docker create --name gocd-data mrohland/gocd-data
+docker build -t ovo/gocd-data -f Dockerfile.gocd-data .
+docker create --name gocd-data ovo/gocd-data
 ```
 
 #### Build an agent image to add docker to standard gocd agent image
 Copy ```certs/domain.crt``` to ```gocd-agent/registry.crt``` prior to building the image to use private registry.
 ```
-docker build -t mrohland/gocd-agent -f Dockerfile.gocd-agent .
+docker build -t ovo/gocd-agent -f Dockerfile.gocd-agent .
 ```
 
-docker build -t mrohland/gocd-server -f Dockerfile.gocd-server .
+docker build -t ovo/gocd-server -f Dockerfile.gocd-server .
 
 
 #### Run go.cd server and link plugin volume against data volume and that against gocd-server
@@ -64,10 +64,10 @@ docker start gocd-plugins
 docker start gocd-data
 
 //docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server gocd/gocd-server
-docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server mrohland/gocd-server
+docker run -ti -p 8153:8153 --volumes-from=gocd-data --volumes-from=gocd-plugins --name gocd-server ovo/gocd-server
 
 # run at least one go.cd build agent via
-for each in 1 ; do docker run -d --privileged --link gocd-server:go-server --name gocd-agent-$each mrohland/gocd-agent; done
+for each in 1 ; do docker run -d --privileged --link gocd-server:go-server --name gocd-agent-$each ovo/gocd-agent; done
 ```
 
 #### open gocd server via:
