@@ -1,6 +1,6 @@
 FROM tispr/gocd-agent-dind
 
-RUN apt-get update; apt-get install wget python -y;
+RUN apt-get update; apt-get install wget python software-properties-common -y;
 #RUN curl -sSL https://get.docker.com/ | sh; gpasswd -a go docker
 RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py; pip install awscli
 
@@ -10,6 +10,8 @@ RUN apt-get update
 RUN apt-get -y install openjdk-8-jdk
 
 RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+RUN usermod -aG docker go
 
 # Installing SBT
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
