@@ -1,4 +1,4 @@
-FROM gocd/gocd-agent
+FROM tispr/gocd-agent-dind:15.1
 
 RUN apt-get update; apt-get install wget python -y; apt-get clean
 RUN curl -sSL https://get.docker.com/ | sh; gpasswd -a go docker
@@ -9,7 +9,7 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y
 RUN apt-get update
 RUN apt-get -y install openjdk-8-jdk
 
-RUN ln -s /usr/lib/jvm/java-8-openjdk-amd64 /java8
+RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 
 # Installing SBT
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
@@ -20,8 +20,8 @@ RUN sudo apt-get install sbt
 ADD gocd-server/.ssh /var/go/.ssh
 RUN chown -R go:go /var/go/.ssh
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose
+#RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+#RUN chmod +x /usr/local/bin/docker-compose
 
-ENTRYPOINT service docker restart && bash
+#ENTRYPOINT service docker restart && bash
 
