@@ -1,0 +1,24 @@
+FROM gocd/gocd-agent
+
+RUN apt-get update; apt-get install wget python -y; apt-get clean
+RUN curl -sSL https://get.docker.com/ | sh; gpasswd -a go docker
+RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py; pip install awscli
+
+# Installing OpenJDK 8
+RUN add-apt-repository ppa:openjdk-r/ppa -y
+RUN apt-get update
+RUN apt-get -y install openjdk-8-jdk
+
+RUN ln -s /usr/lib/jvm/java-8-openjdk-amd64 /java8
+
+# Installing SBT
+RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
+RUN sudo apt-get update
+RUN sudo apt-get install sbt
+
+ADD gocd-server/.ssh /var/go/.ssh
+RUN chown -R go:go /var/go/.ssh
+
+RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
