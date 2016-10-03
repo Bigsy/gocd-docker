@@ -1,6 +1,6 @@
 FROM jpetazzo/dind
 
-ENV GOCD_VERSION 16.10.0
+ENV GOCD_VERSION 16.10.0-4131
 ENV GOCD_DISTR go-agent.deb
 
 RUN apt-get update \
