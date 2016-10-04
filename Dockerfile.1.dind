@@ -34,13 +34,17 @@ RUN apt-get -y install curl apt-transport-https && \
 RUN usermod -aG docker go
 
 ADD ssh/.ssh /var/go/.ssh
-RUN chown -R go:go /var/go/.ssh
+RUN chown -R go:go /var/go/.ssh && \
+    echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /var/go/.ssh/config
 
 RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash && \
     apt-get -y install nodejs build-essential
+
+RUN git config --global user.email "go@bosp-go.ovotech.org.uk" && \
+    git config --global user.name "Go User"
 
 VOLUME /var/lib/go-agent
 
