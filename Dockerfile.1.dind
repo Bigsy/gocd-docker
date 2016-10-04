@@ -43,10 +43,10 @@ RUN chmod +x /usr/local/bin/docker-compose
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash && \
     apt-get -y install nodejs build-essential
 
-RUN su go && \
-    git config --global user.email "go@bosp-go.ovotech.org.uk" && \
-    git config --global user.name "Go User" && \
-    exit
+USER go
+RUN git config --global user.email "go@bosp-go.ovotech.org.uk" && \
+    git config --global user.name "Go User"
+USER root
 
 VOLUME /var/lib/go-agent
 
