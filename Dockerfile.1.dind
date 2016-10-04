@@ -3,24 +3,44 @@ FROM jpetazzo/dind
 ENV GOCD_VERSION 16.10.0-4131
 ENV GOCD_DISTR go-agent.deb
 
+RUN apt-get update; apt-get install wget python software-properties-common -y;
+
+#util
 RUN apt-get update \
-    && apt-get -y install -y openjdk-7-jdk unzip supervisor \
+    && add-apt-repository -y ppa:openjdk-r/ppa \
+    && apt-get update \
+    && apt-get -y install -y openjdk-8-jdk unzip supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+# Installing SBT
+RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
+    apt-get update && \
+    apt-get install sbt
+
+#go cd
 RUN apt-get -y install curl apt-transport-https && \
   echo "deb https://download.go.cd /" > /etc/apt/sources.list.d/gocd.list && \
   curl https://download.go.cd/GOCD-GPG-KEY.asc | apt-key add - && \
   apt-get -y update && \
   apt-get -y install go-agent
 
-RUN mkdir /home/go \
-    && usermod -d /home/go go
+#RUN mkdir /home/go \
+#    && usermod -d /home/go go
 
 RUN usermod -aG docker go
 
-ADD gocd-server/.ssh /home/go/.ssh
-RUN chown -R go:go /home/go/.ssh
+ADD ssh/.ssh /var/go/.ssh
+RUN chown -R go:go /var/go/.ssh
+
+RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash && \
+    apt-get -y install nodejs build-essential
 
 VOLUME /var/lib/go-agent
 
