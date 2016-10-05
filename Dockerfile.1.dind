@@ -11,6 +11,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py; pip install awscli
+
 
 # Installing SBT
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
@@ -27,10 +29,12 @@ RUN apt-get -y install curl apt-transport-https && \
 
 RUN usermod -aG docker go
 
-ADD ssh/.ssh /var/go/.ssh
+ADD files/ssh /var/go/.ssh
+ADD files/aws/ /var/go/.aws/
+ADD files/npm/npmrc /var/go/.npmrc
+
 RUN chown -R go:go /var/go/.ssh && \
-    echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /var/go/.ssh/config %% \
-    echo 'registry=http://npm.ovotech.org.uk:8081/npm.ovotech.org.uk:8081/:_authToken="zHkke8oX+nwItRTUYsU4QidF5QmSzMhoCvQu3x22NqU="'
+    echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /var/go/.ssh/config
 
 RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
