@@ -57,4 +57,4 @@ RUN apt-get -y install curl && \
 
 
 ADD gocd-server/.ssh /var/go/.ssh
-RUN chown -R 999:999 /var/go/.ssh
+RUN chown -R go:go /var/go/.ssh
