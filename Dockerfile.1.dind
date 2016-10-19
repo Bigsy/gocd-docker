@@ -6,7 +6,7 @@ RUN apt-get update; apt-get install wget python software-properties-common -y;
 RUN apt-get update \
     && add-apt-repository -y ppa:openjdk-r/ppa \
     && apt-get update \
-    && apt-get -y install -y openjdk-8-jdk maven unzip supervisor \
+    && apt-get -y install -y openjdk-8-jdk maven leiningen jq unzip supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
