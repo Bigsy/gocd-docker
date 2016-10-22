@@ -35,6 +35,7 @@ ADD files/npm/npmrc /var/go/.npmrc
 ADD files/m2 /var/go/.m2
 
 RUN chown -R go:go /var/go/.ssh && \
+    chown -R go:go /var/go/.m2 && \
     echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /var/go/.ssh/config
 
 RUN curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
