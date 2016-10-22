@@ -32,7 +32,7 @@ RUN usermod -aG docker go
 ADD files/ssh /var/go/.ssh
 ADD files/aws/ /var/go/.aws/
 ADD files/npm/npmrc /var/go/.npmrc
-ADD files/npm/m2 /var/go/.m2
+ADD files/m2 /var/go/.m2
 
 RUN chown -R go:go /var/go/.ssh && \
     echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /var/go/.ssh/config
